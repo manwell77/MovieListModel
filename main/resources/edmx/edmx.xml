@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:sap="http://www.sap.com/Protocols/SAPData" Namespace="MovieListModel">
+            <EntityType Name="Movie">
+                <Key>
+                    <PropertyRef Name="MovieID"/>
+                </Key>
+                <Property FixedLength="32" Name="MovieID" Nullable="false" Type="Edm.String"/>
+                <Property MaxLength="100" Name="Title" Type="Edm.String"/>
+                <Property MaxLength="30" Name="Producer" Type="Edm.String"/>
+                <Property FixedLength="4" Name="Released" Type="Edm.String"/>
+                <Property MaxLength="30" Name="Director" Type="Edm.String"/>
+                <Property MaxLength="100" Name="Writers" Type="Edm.String"/>
+                <Property Name="Summary" Type="Edm.String"/>
+                <Property Name="Playbill" Type="Edm.String"/>
+                <Property MaxLength="20" Name="Genre" Type="Edm.String"/>
+                <NavigationProperty FromRole="From_Movie" Name="ActorSet" Relationship="MovieListModel.MovieActor" ToRole="To_Actor"/>
+            </EntityType>
+            <EntityType Name="Actor">
+                <Key>
+                    <PropertyRef Name="ActorID"/>
+                </Key>
+                <Property FixedLength="32" Name="ActorID" Nullable="false" Type="Edm.String"/>
+                <Property FixedLength="32" Name="MovieID" Nullable="false" Type="Edm.String"/>
+                <Property MaxLength="30" Name="Name" Type="Edm.String"/>
+                <Property MaxLength="30" Name="Role" Type="Edm.String"/>
+                <Property Name="Fictional" Type="Edm.String"/>
+                <Property Name="Picture" Type="Edm.String"/>
+                <Property Name="Scene1" Type="Edm.String"/>
+                <Property Name="Scene2" Type="Edm.String"/>
+                <Property Name="Scene3" Type="Edm.String"/>
+            </EntityType>
+            <Association Name="MovieActor">
+                <End Multiplicity="1" Role="From_Movie" Type="MovieListModel.Movie"/>
+                <End Multiplicity="*" Role="To_Actor" Type="MovieListModel.Actor"/>
+                <ReferentialConstraint>
+                    <Principal Role="From_Movie">
+                        <PropertyRef Name="MovieID"/>
+                    </Principal>
+                    <Dependent Role="To_Actor">
+                        <PropertyRef Name="MovieID"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="default" m:IsDefaultEntityContainer="true">
+                <EntitySet EntityType="MovieListModel.Movie" Name="MovieSet"/>
+                <EntitySet EntityType="MovieListModel.Actor" Name="ActorSet"/>
+                <AssociationSet Association="MovieListModel.MovieActor" Name="MovieActorSet">
+                    <End EntitySet="MovieSet" Role="From_Movie"/>
+                    <End EntitySet="ActorSet" Role="To_Actor"/>
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
